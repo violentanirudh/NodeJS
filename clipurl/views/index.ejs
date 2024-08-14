@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>URL Shortener</title>
+        <link rel="stylesheet" href="/static/css/style.css">
+    </head>
+    <body>
+
+        <div class="container" style="justify-content: space-between; align-items: center;">
+            <h1>ClipURL</h1>
+            <a href="/logout" style="display: block; width: 5rem;">Log Out</a>
+        </div>
+        <div class="form container">
+            <input type="url" id="url" placeholder="Enter Long URL : " />
+            <button onclick="generateURL()">Clip</button>
+        </div>
+
+        <div class="result container"></div>
+
+        <h1>URLs</h1>
+        <table>
+            <% urls.forEach(function(item) { %>
+            <tr>
+                <td><%= item.clicks %></td>
+                <td><a href="http://127.0.0.1:3000/<%= item.alias %>" target="_blank"><%= item.alias %></a></td>
+                <td><%= item.url %></td>
+            </tr>
+            <% }) %>
+        </table>
+
+        <script>
+            async function generateURL() {
+
+                const url = document.querySelector("#url");
+                if (!url) {
+                    alert("Invalid URL");
+                    return;
+                }
+
+                const response = await fetch("/api/url", {
+                    method: "POST",
+                    headers: {'content-type': 'application/x-www-form-urlencoded'},
+                    body: new URLSearchParams({url: url.value})
+                });
+
+                const data = await response.json();
+
+                if ( !data.status || data.status !== 'success') {
+                    console.log('Error')
+                    return
+                }
+
+                const html = `
+                    <tr>
+                        <td>${data.data.clicks}</td>
+                        <td><a href="http://127.0.0.1:3000/${data.data.alias}" target="_blank">${data.data.alias}</a></td>
+                        <td>${data.data.url}</td>
+                    </tr>
+                `
+                document.querySelector('table').innerHTML += html
+
+                document.querySelector('.result').innerHTML += `
+                    <p>http://127.0.0.1:3000/${data.data.alias}</p>
+                `
+
+            }
+        </script>
+    </body>
+</html>

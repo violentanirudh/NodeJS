@@ -1,0 +1,120 @@
+* {
+    font-family: "Mona Sans";
+    box-sizing: border-box;
+    font-size: 1rem;
+}
+
+body {
+    background-color: #f8fafc;
+}
+
+h1 {
+    margin: 2rem auto;
+    width: 40rem;
+    font-size: 2rem;
+}
+
+a {
+    color: #4338ca;
+}
+
+.container {
+    margin: 2rem auto;
+    width: 40rem;
+    display: flex;
+}
+
+.box {
+    width: 24rem;
+    margin: 2rem auto;
+}
+
+.result {
+    height: 2rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.form {
+    justify-content: space-between;
+    background: #e2e8f0;
+    overflow: hidden;
+    border: 2px solid #f8fafc;
+    transition: 0.2s linear;
+}
+
+.form:focus-within {
+    box-shadow: 0 0 0 0.4rem #4338ca20;
+    border-color: #4338ca;
+}
+
+.form input {
+    background-color: transparent;
+    width: calc(100% - 6rem);
+    padding: 1rem;
+    border: none;
+    border-radius: 0.2rem;
+    outline: none;
+}
+
+.form button {
+    width: 6rem;
+    border: none;
+    background-color: #4338ca;
+    color: #fff;
+    outline: none;
+    cursor: pointer;
+}
+
+table {
+    width: 40rem;
+    margin: 2rem auto;
+    table-layout: fixed;
+}
+
+tr td:nth-child(1) {
+    width: 4rem;
+}
+
+tr td:nth-child(2) {
+    width: 8rem;
+}
+
+tr td:nth-child(3) {
+    width: calc(100% - 12rem);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+form input {
+    background-color: #e2e8f0;
+    width: 100%;
+    display: block;
+    padding: 1rem;
+    border: none;
+    border-radius: 0.2rem;
+    outline: none;
+    margin-bottom: 1rem;
+    border: 2px solid #f8fafc;
+    transition: 0.2s linear;
+}
+
+form button {
+    background-color: #4338ca;
+    width: 8rem;
+    color: #FFF;
+    display: block;
+    padding: 1rem;
+    border: none;
+    border-radius: 0.2rem;
+    outline: none;
+    margin-bottom: 1rem;
+    cursor: pointer
+}
+
+
+form input:focus, form button:focus {
+    box-shadow: 0 0 0 0.4rem #4338ca20;
+    border-color: #4338ca;
+}
