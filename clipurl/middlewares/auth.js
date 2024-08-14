@@ -2,7 +2,7 @@ const { verifyJWT } = require('../services/auth')
 
 const handleUserValidation = () => {
 
-    return async (req, res, next) => {
+    return  async (req, res, next) => {
         
         req.user = null
 

@@ -43,7 +43,8 @@ const handleSignIn = async (req, res) => {
             id: user._id,
             name: user.name,
             email: user.email,
-            roles: user.roles
+            roles: user.roles,
+            api: false
         })
         res.cookie('user', token)
         return res.status(200).redirect('/')
