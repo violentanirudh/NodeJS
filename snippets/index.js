@@ -41,11 +41,11 @@ app.use(AuthMiddleware.checkAuthCookie())
 
 
 // Routes
-app.use('/', ViewsRouter)
 app.use('/auth', AuthRouter)
+app.use('/', ViewsRouter)
 app.use('/', AuthMiddleware.checkAuthorization(['user']), ProtectedRouter)
 
 // Server
-app.listen(3000, () => {
+app.listen(4000, () => {
     console.log('Listening On : http://127.0.0.1:3000')
 })

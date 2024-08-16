@@ -1,14 +1,16 @@
 const fs = require('fs')
 const path = require('path')
 const { createSlug } = require('../utils/helpers')
+const { randomBytes } = require('crypto')
+const Files = require('../models/files')
 
 const renderPublish = (req, res) => {
     res.render('publish', { flash: req.flash('flash') })
 }
 
-const handlePublish = (req, res) => {
+const handlePublish = async (req, res) => {
     const languages = ['html', 'css', 'javascript', 'python', 'sql', 'react']
-    const { heading, language, snippet } = req.body
+    const { heading, language, snippet, description } = req.body
 
     if (!heading || heading.trim().length < 10) {
         req.flash('flash', { type: 'info', text: 'Invalid Heading. Minimum 10 Characters.' })
@@ -20,30 +22,39 @@ const handlePublish = (req, res) => {
         return res.redirect('/publish')
     }
 
-    if (!snippet || snippet.trim().length < 100) {
+    if (!description || description.trim().length < 100 || description.length > 4000) {
         req.flash('flash', { type: 'info', text: 'Invalid Snippet. Minimum 100 Characters.' })
         return res.redirect('/publish')
     }
 
-    const json = {
-        heading,
-        language,
-        snippet,
-        likes: {},
+    if (!snippet || snippet.trim().length < 100 || snippet.length > 40000) {
+        req.flash('flash', { type: 'info', text: 'Invalid Snippet. Minimum 100 Characters.' })
+        return res.redirect('/publish')
     }
 
-    const filename = path.join(__dirname, '../json', `${Date.now()}-${createSlug(heading)}.json`)
+    const uid = randomBytes(3).toString('hex')
+    const slug = createSlug(heading)
 
-    fs.writeFile(filename, JSON.stringify(json), (err) => {
-        if (err) {
-            console.error('Error writing file:', err)
-            req.flash('flash', { type: 'error', text: 'Error saving your data. Please try again.' })
-            return res.redirect('/publish')
-        }
-        console.log('File saved:', filename)
+    const data = {
+        uid, 
+        slug, 
+        heading, 
+        language,
+        description, 
+        snippet: JSON.stringify(snippet), 
+        fullname: req.user.fullname,
+        user: req.user.id, 
+    }
+
+    try {
+        await Files.create(data)
         req.flash('flash', { type: 'success', text: 'Snippet Will Be Published After Verification.' })
-        res.redirect('/publish')
-    })
+    } catch (error) {
+        req.flash('flash', { type: 'error', text: 'Error saving your data. Please try again.' })
+    }
+
+    return res.redirect('/publish')
+
 }
 
 module.exports = {
